@@ -1,0 +1,35 @@
+import cv2
+import numpy as np
+
+# Carregando o modelo de reconhecimento facial
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+# Iniciando o webcam
+cap = cv2.VideoCapture(0)
+
+while True:
+    # Capturando quadro a quadro
+    ret, frame = cap.read()
+
+    # Convertendo a imagem para escala de cinza
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Detectando faces
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+
+    # Desenhando retângulos em volta das faces
+    for (x, y, w, h) in faces:
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+
+    # Exibindo a imagem
+    cv2.imshow('Reconhecimento Facial', frame)
+
+    # Saindo do loop com 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Finalizando o webcam
+cap.release()
+
+# Fechando as janelas
+cv2.destroyAllWindows()
